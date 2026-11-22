@@ -24,7 +24,10 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 76px; }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
 
 body {
   margin: 0;
@@ -53,6 +56,12 @@ pre {
 pre code { background: none; border: 0; padding: 0; font-size: 1em; }
 
 .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 24px; }
+
+/* Read by screen readers, not shown. */
+.sr {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
 
 .skip { position: absolute; left: -9999px; top: 8px; z-index: 10; background: var(--accent); color: var(--accent-ink); padding: 8px 14px; border-radius: 6px; }
 .skip:focus { left: 8px; }
@@ -85,7 +94,11 @@ pre code { background: none; border: 0; padding: 0; font-size: 1em; }
   display: inline-flex; border: 1px solid var(--line-strong); border-radius: 99px; padding: 2px;
   font-size: 13px; font-weight: 600; letter-spacing: 0.04em; line-height: 1;
 }
-.lang a { color: var(--dim); text-decoration: none; padding: 5px 10px; border-radius: 99px; }
+/* At least 24 x 24 px per target (WCAG 2.2, 2.5.8). */
+.lang a {
+  color: var(--dim); text-decoration: none; padding: 6px 11px; border-radius: 99px;
+  min-width: 24px; min-height: 24px; text-align: center;
+}
 .lang a:hover { color: var(--text); }
 .lang a[aria-current] { background: var(--bg-raised); color: var(--text); box-shadow: inset 0 0 0 1px var(--line-strong); }
 
@@ -277,4 +290,21 @@ pre code { background: none; border: 0; padding: 0; font-size: 1em; }
   .changes li { grid-template-columns: 1fr; gap: 2px; }
   .foot-inner { grid-template-columns: 1fr; }
   html { scroll-padding-top: 110px; }
+}
+
+/* Print: light paper, no navigation, legal pages stay readable --------------------------------- */
+
+@media print {
+  :root {
+    --bg: #fff; --bg-raised: #fff; --text: #000; --dim: #222; --faint: #555;
+    --line: #bbb; --line-strong: #888; --accent: #000; color-scheme: light;
+  }
+  body { font-size: 11pt; background: #fff; color: #000; }
+  .top, .skip, .main-nav, .lang, .actions, .foot nav, .hero-logo { display: none; }
+  .hero-inner { grid-template-columns: 1fr; }
+  .card, .next, pre, .changes li, .detail { break-inside: avoid; }
+  .detail:not([open]) > :not(summary) { display: none; }
+  a { color: #000; }
+  .page a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; }
+  .foot { margin-top: 24px; }
 }

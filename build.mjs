@@ -481,20 +481,27 @@ function loadData(opts) {
   const snap = join(ROOT, 'data', 'snapshot.json');
   if (!existsSync(snap)) throw new Error('no ActCraft checkout (./actcraft or --source) and no data/snapshot.json');
   const s = JSON.parse(readFileSync(snap, 'utf8'));
-  return { from: 'data/snapshot.json', roadmapMd: s.roadmap, history: s.history };
+  // Say how old the offline data is, so a stale snapshot is noticed.
+  return { from: `data/snapshot.json (taken ${s.taken ?? 'on an unknown date'})`, roadmapMd: s.roadmap, history: s.history };
 }
 
 // ---------------------------------------------------------------------------------------------
 // Layout
 
 // `file` is the page's path inside its language folder (index.html, impressum.html, ...).
-function layout({ lang, file, title, description, body, notFound = false }) {
+const layout = (page) => externalLinksInNewTab(renderLayout(page), page.lang);
+
+function renderLayout({ lang, file, title, description, body, notFound = false }) {
   const t = T[lang];
   const base = notFound ? '/' : lang === 'de' ? '../' : '';
   const local = notFound ? '/' : ''; // pages of one language share a folder
   const home = notFound ? '/' : 'index.html';
   const here = (l) => `${DIR[l]}${file}`; // path from the site root
-  const switchHref = (l) => (notFound ? `/${DIR[l]}index.html` : `${base}${here(l)}`);
+  const switchHref = (l) => {
+    if (notFound) return `/${DIR[l]}index.html`;
+    if (l === lang) return file; // same folder
+    return lang === 'en' ? `de/${file}` : `../${file}`;
+  };
   const canonical = `${SITE_URL}${here(lang)}`.replace(/index\.html$/, '');
   const fullTitle = title ? `${title} – ActCraft` : t.siteTitle;
   const nav = ['progress', 'features', 'changes']
@@ -593,7 +600,7 @@ function renderSectionDetails(s, lang) {
   const l = t.detailLang ? ` lang="${t.detailLang}"` : '';
   const items = s.items.length
     ? `<ul class="items">
-${s.items.map((i) => `          <li class="it-${i.status}"><span class="it-mark" aria-label="${t.itemMark[i.status]}"></span><span${l}>${inlineMd(i.text)}</span></li>`).join('\n')}
+${s.items.map((i) => `          <li class="it-${i.status}"><span class="it-mark" aria-hidden="true"></span><span class="sr">${t.itemMark[i.status]}: </span><span${l}>${inlineMd(i.text)}</span></li>`).join('\n')}
         </ul>`
     : '';
   const para = s.paragraph ? `<p${l}>${inlineMd(s.paragraph)}</p>` : '';
@@ -728,6 +735,18 @@ function fillLegal(html, config, lang, file) {
 }
 
 // ---------------------------------------------------------------------------------------------
+// Links to other sites open in a new tab
+
+const NEW_TAB = { en: 'opens in a new tab', de: 'öffnet in neuem Tab' };
+
+function externalLinksInNewTab(html, lang) {
+  return html.replace(/<a href="(https?:\/\/[^"]+)"([^>]*)>([\s\S]*?)<\/a>/g, (whole, href, attrs, inner) => {
+    if (new URL(href).hostname.replace(/^www\./, '') === 'actcraft.org') return whole;
+    return `<a href="${href}"${attrs} target="_blank" rel="noopener noreferrer">${inner}<span class="sr"> (${NEW_TAB[lang]})</span></a>`;
+  });
+}
+
+// ---------------------------------------------------------------------------------------------
 // Main
 
 function main() {
@@ -769,6 +788,22 @@ function main() {
       count++;
     }
   }
+  // Sitemap with both language versions of every page, so search engines show the right one.
+  const urls = ['index.html', 'impressum.html', 'datenschutz.html'];
+  const loc = (l, f) => `${SITE_URL}${DIR[l]}${f}`.replace(/index\.html$/, '');
+  writeFileSync(
+    join(opts.out, 'sitemap.xml'),
+    `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${urls.flatMap((f) => LANGS.map((l) => `  <url>
+    <loc>${loc(l, f)}</loc>
+${LANGS.map((a) => `    <xhtml:link rel="alternate" hreflang="${a}" href="${loc(a, f)}"/>`).join('\n')}
+    <xhtml:link rel="alternate" hreflang="x-default" href="${loc('en', f)}"/>
+  </url>`)).join('\n')}
+</urlset>
+`,
+  );
+
   // Served by GitHub Pages for every unknown path, in both languages, so its links are absolute.
   writeFileSync(
     join(opts.out, '404.html'),

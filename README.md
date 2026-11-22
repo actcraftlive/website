@@ -9,6 +9,8 @@ work has come. Served by GitHub Pages at <https://actcraft.org>, in English (`/`
 - Nothing is loaded from other servers: system fonts only, one local stylesheet, local images.
 - A Content Security Policy (`default-src 'none'; img-src 'self'; style-src 'self'`) enforces
   this in the browser, and `referrer` is set to `no-referrer`.
+- Links to other sites (GitHub and the like) open in a new tab with `rel="noopener noreferrer"`
+  and say so to screen readers.
 - The language switch (EN / DE in the header) is a plain link to the same page in the other
   language. Nothing is stored and there is no automatic redirect.
 - Legal notice (`impressum.html`) and privacy policy (`datenschutz.html`) in both languages; the
@@ -22,6 +24,7 @@ work has come. Served by GitHub Pages at <https://actcraft.org>, in English (`/`
 | `/impressum.html` (Legal notice) | `/de/impressum.html` (Impressum) |
 | `/datenschutz.html` (Privacy policy) | `/de/datenschutz.html` (Datenschutzerklärung) |
 | `/404.html` (both languages) | |
+| `/sitemap.xml` (every page in both languages, with `hreflang` links; named in `robots.txt`) | |
 
 ## How it works
 
@@ -31,7 +34,7 @@ it falls back to `data/snapshot.json`, a copy of the same data, so the site also
 
 | Path | What it is |
 |---|---|
-| `build.mjs` | Generator: milestone overview, progress bars, roadmap details, recent changes; all texts in English and German |
+| `build.mjs` | Generator: milestone overview, progress bars, roadmap details, recent changes, sitemap; all texts in English and German |
 | `content/en/`, `content/de/` | Bodies of the legal pages per language |
 | `content/404.html` | The bilingual "not found" page |
 | `site/` | Static files copied as they are: stylesheet, images, `CNAME`, `robots.txt` |
@@ -54,6 +57,18 @@ npm run build          # writes dist/; add -- --allow-incomplete while site.conf
 npm run snapshot       # optional: refresh data/snapshot.json from the checkout
 # open dist/index.html in a browser
 ```
+
+## Publishing a change
+
+```sh
+npm run build                 # check that it builds
+git add -A
+git commit -m "Describe the change"
+git push origin main          # GitHub Actions builds with live ActCraft data and deploys
+```
+
+The workflow also runs every six hours, so new work in the ActCraft repository appears on the
+site without a push here. `data/snapshot.json` is only used for builds without a checkout.
 
 ## Deployment
 
