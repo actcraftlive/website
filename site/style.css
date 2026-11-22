@@ -74,10 +74,20 @@ pre code { background: none; border: 0; padding: 0; font-size: 1em; }
 }
 .brand:hover { color: var(--text); }
 .brand img { border-radius: 8px; }
-.top nav { display: flex; gap: 22px; flex-wrap: wrap; font-size: 15px; }
-.top nav a { color: var(--dim); text-decoration: none; }
-.top nav a:hover, .top nav a[aria-current] { color: var(--text); }
+.main-nav { display: flex; gap: 22px; flex-wrap: wrap; font-size: 15px; }
+.main-nav a { color: var(--dim); text-decoration: none; }
+.main-nav a:hover, .main-nav a[aria-current] { color: var(--text); }
 .ext::after { content: " ↗"; font-size: 0.85em; }
+
+/* Language switch: two plain links, nothing stored. */
+.brand { margin-right: auto; }
+.lang {
+  display: inline-flex; border: 1px solid var(--line-strong); border-radius: 99px; padding: 2px;
+  font-size: 13px; font-weight: 600; letter-spacing: 0.04em; line-height: 1;
+}
+.lang a { color: var(--dim); text-decoration: none; padding: 5px 10px; border-radius: 99px; }
+.lang a:hover { color: var(--text); }
+.lang a[aria-current] { background: var(--bg-raised); color: var(--text); box-shadow: inset 0 0 0 1px var(--line-strong); }
 
 /* Hero --------------------------------------------------------------------------------------- */
 
@@ -221,11 +231,16 @@ pre code { background: none; border: 0; padding: 0; font-size: 1em; }
 .page strong { color: var(--text); }
 .page address { font-style: normal; color: var(--text); line-height: 1.7; }
 .page .note { font-size: 14px; color: var(--faint); margin-top: 40px; }
+.page .binding {
+  font-size: 15px; margin: 0 0 32px; padding: 12px 16px; background: var(--bg-raised);
+  border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0;
+}
 
 .notfound { padding: 96px 0 64px; text-align: center; }
 .notfound img { mix-blend-mode: lighten; }
 .notfound h1 { font-size: 40px; margin: 12px 0; }
 .notfound p { color: var(--dim); }
+.notfound-actions { justify-content: center; margin-top: 24px; }
 
 /* Footer ------------------------------------------------------------------------------------- */
 
@@ -251,7 +266,8 @@ pre code { background: none; border: 0; padding: 0; font-size: 1em; }
   body { font-size: 16px; }
   .wrap { padding: 0 16px; }
   .top-inner { padding-top: 8px; padding-bottom: 8px; }
-  .top nav { gap: 16px; }
+  .main-nav { gap: 16px; order: 3; flex-basis: 100%; }
+  .lang { order: 2; }
   .hero { padding-top: 32px; }
   .hero-inner { grid-template-columns: 1fr; }
   .hero-logo { order: -1; max-width: 240px; }
