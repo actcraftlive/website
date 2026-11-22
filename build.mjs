@@ -505,7 +505,8 @@ function renderLayout({ lang, file, title, description, body, notFound = false }
   const canonical = `${SITE_URL}${here(lang)}`.replace(/index\.html$/, '');
   const fullTitle = title ? `${title} – ActCraft` : t.siteTitle;
   const nav = ['progress', 'features', 'changes']
-    .map((k) => `      <a href="${home}#${t.ids[k]}">${t.nav[k]}</a>`)
+    // On the home page itself a bare #anchor scrolls instead of loading the page again.
+    .map((k) => `      <a href="${file === 'index.html' ? '' : home}#${t.ids[k]}">${t.nav[k]}</a>`)
     .join('\n');
   const alt = notFound
     ? ''
@@ -558,7 +559,7 @@ ${body}
 </main>
 <footer class="foot">
   <div class="wrap foot-inner">
-    <p class="foot-brand"><img src="${base}img/actcraft-icon-96.png" alt="" width="28" height="28"><span>${t.footBrand}</span></p>
+    <p class="foot-brand"><img src="${base}img/actcraft-icon-96.png" alt="" width="28" height="28" loading="lazy" decoding="async"><span>${t.footBrand}</span></p>
     <nav aria-label="${t.legalLabel}">
       <a href="${local}impressum.html">${t.imprint}</a>
       <a href="${local}datenschutz.html">${t.privacy}</a>
@@ -635,7 +636,7 @@ function renderHome(roadmap, hist, lang) {
       <p class="status-line"><span class="dot"></span>${t.statusLine}${current ? ` ${t.currently} <strong>${esc(currentName)}</strong>.` : ''}</p>
       <p class="actions"><a class="btn btn-primary" href="#${ids.progress}">${t.toProgress}</a><a class="btn" href="${REPO_URL}">${t.toGithub}</a></p>
     </div>
-    <img class="hero-logo" src="${lang === 'de' ? '../' : ''}img/actcraft-logo.jpg" alt="${t.logoAlt}" width="512" height="512">
+    <img class="hero-logo" src="${lang === 'de' ? '../' : ''}img/actcraft-logo.jpg" alt="${t.logoAlt}" width="512" height="512" fetchpriority="high">
   </div>
 </section>
 
