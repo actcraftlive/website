@@ -1,0 +1,5 @@
+_site/
+actcraft/
+node_modules/
+.DS_Store
+Thumbs.db
