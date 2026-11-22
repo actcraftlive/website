@@ -212,6 +212,20 @@ main p a[target="_blank"]:not(.btn):not(.more)::after,
 .it-mark { flex: none; width: 12px; height: 12px; margin-top: 0.42em; border-radius: 50%; border: 2px solid var(--planned); }
 .it-done .it-mark { background: var(--done); border-color: var(--done); }
 .it-partial .it-mark { border-color: var(--partial); background: linear-gradient(90deg, var(--partial) 50%, transparent 50%); }
+.it-body { min-width: 0; }
+.items-sub { margin: 6px 0 0; padding: 0; font-size: 14.5px; }
+.items-sub li { padding: 3px 0; }
+.items li.it-note { color: var(--faint); font-style: italic; padding-left: 24px; }
+
+/* Next up: the planned order of the open work */
+
+.next-up { margin-top: 40px; padding: 22px 24px; background: var(--bg-raised); border: 1px solid var(--line); border-radius: var(--radius); }
+.next-up h3 { margin-bottom: 6px; }
+.steps { margin: 0; padding: 0 0 0 1.6em; color: var(--dim); font-size: 15px; columns: 2; column-gap: 32px; }
+.steps li { padding: 3px 0 3px 4px; break-inside: avoid; }
+.steps li:first-child { color: var(--text); }
+.steps li::marker { color: var(--accent); font-family: var(--mono); font-size: 13px; }
+@media (max-width: 720px) { .steps { columns: 1; } }
 
 /* Feature cards */
 

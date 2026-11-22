@@ -105,11 +105,11 @@ const MILESTONES = {
     },
   },
   M2: {
-    en: 'Regions, lyrics and chords, sheet music (PDF), lyrics editor, second screen',
+    en: 'Regions, lyrics and chords, sheet music (PDF, MusicXML notes and tab), lyrics editor, second screen',
     title: { en: 'Lyrics, regions, sheet music', de: 'Songtexte, Regionen, Noten' },
     text: {
-      en: 'Regions, lyrics with chords, sheet music as PDF, lyrics editor and a second screen',
-      de: 'Regionen, Songtexte mit Akkorden, Noten als PDF, Texteditor und zweiter Bildschirm',
+      en: 'Regions, lyrics with chords, sheet music as PDF and as MusicXML notes and tablature, lyrics editor and a second screen',
+      de: 'Regionen, Songtexte mit Akkorden, Noten als PDF und als MusicXML-Notensatz mit Tabulatur, Texteditor und zweiter Bildschirm',
     },
   },
   M3: {
@@ -173,7 +173,10 @@ const MILESTONES = {
 // Roadmap section headings that are not a single milestone; unknown headings stay as they are.
 const SECTION_TITLES = {
   en: { 'M7–M9': 'M7–M9 One show, network, installers' },
-  de: { Languages: 'Sprachen', 'M4–M6 Lighting': 'M4–M6 Licht', 'M7–M9': 'M7–M9 Eine Show, Netzwerk, Installer' },
+  de: {
+    Languages: 'Sprachen', 'M4–M6 Lighting': 'M4–M6 Licht', 'M7–M9': 'M7–M9 Eine Show, Netzwerk, Installer',
+    'Next up': 'Als Nächstes', 'Quality and open questions': 'Qualität und offene Fragen',
+  },
 };
 
 const FEATURES = {
@@ -184,7 +187,7 @@ const FEATURES = {
     ['Library and set lists', 'Search with AND, OR, NOT, fields and phrases. Playlists with sets, smart playlists, queue and history; autoplay, crossfade and fade-out.'],
     ['Lyrics and chords', 'Chords in ChordPro format, transpose and capo. Timecoded lines follow the music – also in a window of their own for a second screen.'],
     ['Regions and spoken cues', 'Up to 64 regions per song to loop, skip and stop, jumpable live. The computer\'s voice announces song titles and song parts: “Chorus”, “End 3 2 1”.'],
-    ['Sheet music as PDF', 'One PDF per song in the Sheet music tab: pages are rendered in the background, with zoom, inverted colours for dark stages and scrolling with playback.'],
+    ['Sheet music and tablature', 'A PDF per song with zoom, inverted colours for dark stages and scrolling with playback. MusicXML scores are drawn as staves and tablature; the playing bar is marked and a click on a bar plays from there.'],
     ['One show file', 'Everything lives in one .actcraft file, and older files keep loading. Show packages take all audio files along – for backup or moving to another computer.'],
     ['Remote control', 'Every action is a command: from the window, from the command line, through a local JSON channel or from an AI assistant via MCP.'],
   ],
@@ -195,7 +198,7 @@ const FEATURES = {
     ['Bibliothek und Setlisten', 'Suche mit AND, OR, NOT, Feldern und Phrasen. Playlists mit Sets, Smart-Playlists, Warteschlange und Verlauf; Autoplay, Crossfade und Fade-out.'],
     ['Songtexte und Akkorde', 'Akkorde im ChordPro-Format, Transponieren und Kapo. Zeitcodierte Zeilen laufen mit der Musik mit – auch in einem eigenen Fenster für den zweiten Bildschirm.'],
     ['Regionen und Ansagen', 'Bis zu 64 Regionen pro Song zum Loopen, Überspringen und Anhalten, live anspringbar. Die Computerstimme sagt Songtitel und Songteile an: „Chorus“, „End 3 2 1“.'],
-    ['Noten als PDF', 'Eine PDF pro Song im Reiter Noten: Seiten werden im Hintergrund gerendert, mit Zoom, invertierten Farben für dunkle Bühnen und Mitscrollen.'],
+    ['Noten und Tabulatur', 'Eine PDF pro Song mit Zoom, invertierten Farben für dunkle Bühnen und Mitscrollen. MusicXML-Partituren erscheinen als Notenzeilen und Tabulatur; der laufende Takt ist markiert, ein Klick auf einen Takt spielt ab dort.'],
     ['Eine Show-Datei', 'Alles steckt in einer .actcraft-Datei, ältere Dateien laden weiter. Show-Pakete nehmen alle Audiodateien mit – für Backup oder den Umzug auf einen anderen Rechner.'],
     ['Fernsteuerung', 'Jede Aktion ist ein Befehl: aus dem Fenster, von der Kommandozeile, über einen lokalen JSON-Kanal oder von einem KI-Assistenten über MCP.'],
   ],
@@ -250,6 +253,7 @@ const T = {
     detailH3: 'Every item in detail',
     detailLead: `Taken directly from the <a href="${REPO_URL}/blob/main/ROADMAP.md">roadmap in the repository</a>.`,
     detailLang: null,
+    stepsLead: 'The open work in the order it is planned; each step is a pull request of its own.',
     featuresH2: 'What works today',
     featuresLead: 'ActCraft is a native desktop app written in Rust. Its interface is available in English and German.',
     nextH3: 'What comes next',
@@ -315,6 +319,7 @@ const T = {
     detailH3: 'Alle Punkte im Detail',
     detailLead: `Direkt aus der <a href="${REPO_URL}/blob/main/ROADMAP.md">Roadmap im Repository</a> übernommen, daher im englischen Original.`,
     detailLang: 'en',
+    stepsLead: 'Die offene Arbeit in der geplanten Reihenfolge; jeder Schritt ist ein eigener Pull Request. Aus der Roadmap, daher auf Englisch.',
     featuresH2: 'Was heute schon geht',
     featuresLead: 'ActCraft ist eine native Desktop-App, geschrieben in Rust. Die Oberfläche gibt es auf Englisch und Deutsch.',
     nextH3: 'Was noch kommt',
@@ -370,6 +375,7 @@ function parseRoadmap(md) {
         from: range ? Number(range[1]) : null,
         to: range ? Number(range[2] ?? range[1]) : null,
         items: [],
+        steps: [],
         text: [],
       };
       sections.push(cur);
@@ -377,12 +383,26 @@ function parseRoadmap(md) {
       continue;
     }
     if (!cur) continue;
-    const item = line.match(/^-\s+(✅|🔶|⬜)\s*(.*)$/u);
+    // Top-level item: "- ✅ text", or "- text" without a mark (a note, not counted).
+    const item = line.match(/^-\s+(?:(✅|🔶|⬜)\s*)?(.*)$/u);
+    // Sub-item, indented below an item: "  - ⬜ text" or "  - text".
+    const sub = line.match(/^\s{2,}-\s+(?:(✅|🔶|⬜)\s*)?(.*)$/u);
+    // Numbered step: "1. text" (the "Next up" list).
+    const step = line.match(/^\d+\.\s+(.*)$/);
+    const last = cur.items[cur.items.length - 1];
     if (item) {
-      cur.items.push({ status: STATUS[item[1]], text: item[2].trim() });
-      inItem = true;
+      cur.items.push({ status: item[1] ? STATUS[item[1]] : null, text: item[2].trim(), children: [] });
+      inItem = 'item';
+    } else if (sub && inItem && last) {
+      last.children.push({ status: sub[1] ? STATUS[sub[1]] : null, text: sub[2].trim() });
+      inItem = 'sub';
+    } else if (step) {
+      cur.steps.push(step[1].trim());
+      inItem = 'step';
     } else if (inItem && /^\s{2,}\S/.test(line)) {
-      cur.items[cur.items.length - 1].text += ` ${line.trim()}`;
+      if (inItem === 'sub') last.children[last.children.length - 1].text += ` ${line.trim()}`;
+      else if (inItem === 'step') cur.steps[cur.steps.length - 1] += ` ${line.trim()}`;
+      else last.text += ` ${line.trim()}`;
     } else if (line.trim() === '') {
       inItem = false;
     } else {
@@ -402,7 +422,9 @@ function parseRoadmap(md) {
   return { milestones, sections };
 }
 
-function progressOf(items) {
+// Counts every marked item and sub-item; notes without a mark are not counted.
+function progressOf(list) {
+  const items = list.flatMap((i) => [i, ...(i.children ?? [])]).filter((i) => i.status);
   if (!items.length) return null;
   const done = items.filter((i) => i.status === 'done').length;
   const partial = items.filter((i) => i.status === 'partial').length;
@@ -602,9 +624,18 @@ function renderMilestone(m, lang) {
 function renderSectionDetails(s, lang) {
   const t = T[lang];
   const l = t.detailLang ? ` lang="${t.detailLang}"` : '';
+  const li = (i, indent) => {
+    const cls = i.status ? `it-${i.status}` : 'it-note';
+    const mark = i.status ? `<span class="it-mark" aria-hidden="true"></span><span class="sr">${t.itemMark[i.status]}: </span>` : '';
+    const subs = i.children?.length
+      ? `<ul class="items items-sub">\n${i.children.map((c) => li(c, `${indent}  `)).join('\n')}\n${indent}</ul>`
+      : '';
+    const body = subs ? `<div class="it-body"><span${l}>${inlineMd(i.text)}</span>${subs}</div>` : `<span${l}>${inlineMd(i.text)}</span>`;
+    return `${indent}<li class="${cls}">${mark}${body}</li>`;
+  };
   const items = s.items.length
     ? `<ul class="items">
-${s.items.map((i) => `          <li class="it-${i.status}"><span class="it-mark" aria-hidden="true"></span><span class="sr">${t.itemMark[i.status]}: </span><span${l}>${inlineMd(i.text)}</span></li>`).join('\n')}
+${s.items.map((i) => li(i, '          ')).join('\n')}
         </ul>`
     : '';
   const para = s.paragraph ? `<p${l}>${inlineMd(s.paragraph)}</p>` : '';
@@ -614,6 +645,21 @@ ${s.items.map((i) => `          <li class="it-${i.status}"><span class="it-mark"
         <summary><span>${esc(sectionTitle(s, lang))}</span>${count}</summary>
         ${items}${para}
       </details>`;
+}
+
+// A numbered list in the roadmap ("Next up"): the planned order of the open work.
+function renderSteps(s, lang) {
+  const t = T[lang];
+  const l = t.detailLang ? ` lang="${t.detailLang}"` : '';
+  return `
+    <div class="next-up">
+      <h3>${esc(sectionTitle(s, lang))}</h3>
+      <p class="section-lead small">${t.stepsLead}</p>
+      <ol class="steps">
+${s.steps.map((x) => `        <li><span${l}>${inlineMd(x)}</span></li>`).join('\n')}
+      </ol>
+    </div>
+`;
 }
 
 function renderHome(roadmap, hist, lang) {
@@ -662,11 +708,11 @@ ${stats.map(([v, l]) => `      <div><dt>${l}</dt><dd>${esc(v)}</dd></div>`).join
     <ol class="milestones">
 ${milestones.map((m) => renderMilestone(m, lang)).join('\n')}
     </ol>
-
+${sections.filter((s) => s.steps.length).map((s) => renderSteps(s, lang)).join('\n')}
     <h3 class="sub">${t.detailH3}</h3>
     <p class="section-lead small">${t.detailLead}</p>
     <div class="details">
-${sections.filter((s) => s.items.length || s.paragraph).map((s) => renderSectionDetails(s, lang)).join('\n')}
+${sections.filter((s) => s.items.length || (s.paragraph && !s.steps.length)).map((s) => renderSectionDetails(s, lang)).join('\n')}
     </div>
   </div>
 </section>
@@ -817,7 +863,7 @@ ${LANGS.map((a) => `    <xhtml:link rel="alternate" hreflang="${a}" href="${loc(
 
   console.log(
     `built ${count} pages into ${opts.out} from ${data.from}: ${roadmap.milestones.length} milestones, ` +
-      `${roadmap.sections.reduce((n, s) => n + s.items.length, 0)} roadmap items, ${data.history.commits} commits`,
+      `${progressOf(roadmap.sections.flatMap((s) => s.items))?.total ?? 0} roadmap items, ${roadmap.sections.reduce((n, s) => n + s.steps.length, 0)} next steps, ${data.history.commits} commits`,
   );
 }
 
