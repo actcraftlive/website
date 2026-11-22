@@ -261,7 +261,10 @@ const T = {
     tryH2: 'Try it yourself',
     tryLead: 'Ready-made installers arrive with milestone M9. Until then, ActCraft can be built from source with a Rust toolchain (1.95 or newer):',
     tryOutro: `Bug reports, ideas and pull requests are welcome – see the project's <a href="${REPO_URL}#readme">README</a> for how to contribute.`,
-    email: (local, domain) => `${local} [the at sign] ${domain.split('.').join(' [dot] ')}`,
+    // Spelled out as a sentence, with no "[at]"/"[dot]" tokens that harvesters know how to undo.
+    email: (local, domain) =>
+      `${local}, followed by the at sign (the one you type with Shift + 2 on an English keyboard), ` +
+      `followed by ${domain.split('.').join(', then a single full stop, then ')}`,
     missing: (k) => `[${k} missing]`,
   },
   de: {
