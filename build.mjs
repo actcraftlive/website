@@ -439,7 +439,8 @@ cargo run -p actcraft --release --bin actcraft</code></pre>
 // ---------------------------------------------------------------------------------------------
 // Legal pages
 
-const REQUIRED = ['name', 'street', 'postcode_city', 'email'];
+// The e-mail address is stored in two parts so the public repository holds no harvestable address.
+const REQUIRED = ['name', 'street', 'postcode_city', 'email_user', 'email_domain'];
 
 function fillLegal(html, config, allowIncomplete) {
   const missing = REQUIRED.filter((k) => !config[k] || !String(config[k]).trim());
@@ -450,8 +451,13 @@ function fillLegal(html, config, allowIncomplete) {
     );
   }
   const val = (k) => (config[k] && String(config[k]).trim()) || `[${k} fehlt]`;
-  const email = val('email');
-  const mail = `<a href="${entities(`mailto:${email}`)}">${entities(email)}</a>`;
+  // Written out in words, no mailto link: readable for people, useless for address harvesters.
+  const local = val('email_user');
+  const domain = val('email_domain');
+  const mail = entities(
+    `${local} [das At-Zeichen, wie es auf der deutschen Tastatur mit AltGr + Q entsteht] ` +
+      domain.split('.').join(' [ein einfacher Punkt] '),
+  );
   return html
     .replace(/\{\{name\}\}/g, esc(val('name')))
     .replace(/\{\{street\}\}/g, esc(val('street')))

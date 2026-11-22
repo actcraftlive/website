@@ -21,7 +21,7 @@ ActCraft repository and writes the site to `_site/`. The ActCraft repository is 
 | `build.mjs` | Generator: milestone overview, progress bars, roadmap details, recent changes |
 | `content/` | Bodies of the Impressum, privacy and 404 pages |
 | `site/` | Static files copied as they are: stylesheet, images, `CNAME`, `robots.txt` |
-| `site.config.json` | Operator name, address and e-mail for Impressum and privacy page |
+| `site.config.json` | Operator name, address and e-mail (in two parts) for Impressum and privacy page |
 | `.github/workflows/pages.yml` | Builds and deploys on push, every six hours and on demand |
 
 The build refuses to run while `site.config.json` is incomplete, so the site never goes out
