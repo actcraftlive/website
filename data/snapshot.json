@@ -1,118 +1,118 @@
 {
-  "taken": "2026-11-22",
-  "roadmap": "# Roadmap\n\nMilestones run in order. Each one ends green on `cargo xtask ci`, with\n[docs/parity.md](docs/parity.md) (every feature with its command id and status) updated.\n\nLegend: ✅ done · 🔶 partly done · ⬜ not started\n\n| Milestone | What it brings | Status |\n|---|---|---|\n| M0 | Foundation: commands, CLI, control channel, MCP, build gate | ✅ |\n| M1 | Audio engine, mixer, outputs, metronome, library, playlists, queue | 🔶 |\n| M2 | Regions, lyrics and chords, sheet music (PDF, MusicXML notes and tab), lyrics editor, second screen | 🔶 in progress |\n| M3 | MIDI in/out/sync, macros, remote actions, assignable on-screen controls | ⬜ |\n| M4 | DMX output (Art-Net, sACN, USB), fixtures and patch, fixture library, DMX monitor | ⬜ |\n| M5 | 2D stage preview, programming, presets, sequences, effects engine | ⬜ |\n| M6 | Cues, cue lists, control pages, blind and freeze, beat sync | ⬜ |\n| M7 | One show: lighting lane on the song timeline, shared clock | ⬜ |\n| M8 | Band network, backup machine, OSC, DMX input, joystick, Hue | ⬜ |\n| M9 | Installers: MSI and zip, DMG, AppImage/DEB/RPM/tarball | ⬜ |\n\n## Next up\n\nThe open items below, in the order they are planned. Each one is a pull request of its own;\ndetails are in the milestone sections further down.\n\n1. Notation: bar offset between score and audio (M2)\n2. Notation: repeats and voltas played in order (M2)\n3. Notation: slurs and ties as arcs, tuplets, techniques in the tab (M2)\n4. Notation: lyrics under the notes and chord symbols above them (M2)\n5. Notation: keyboard way to move to a bar (M2, accessibility)\n6. Second window shows sheet music too: PDF and notation (M2)\n7. PDF annotations (M2)\n8. Lyrics editor: timecode-aware undo (M2)\n9. Lyrics from audio tags and DOCX text; markers from other formats than WAV (M2)\n10. Show package of a single song or playlist (M1)\n11. Command errors that carry a value (file name, number) in the window's language\n12. M3: MIDI in/out, MIDI file per song, MIDI Timecode and Clock, remote actions\n\n## Quality and open questions\n\n- ⬜ Keyboard and accessibility-tree tests (kittest) for the window: the helpers don't exist in\n  this repository yet; every new control should get one once they do\n- ⬜ The MusicXML reader (`actcraft-notation`) is app-independent: offer it to the shared\n  libraries (craft-libs), whose `craft-score` only writes MusicXML\n- ⬜ Serif and script font tags wait for fonts from the shared font store\n- ⬜ Effect plugins per track and bus: choose the plugin format after its licence check\n- Waiting on the owner's confirmation: the logo's licence (MIT OR Apache-2.0, ATTRIBUTION.md) and\n  the Apache-2.0 choice for `self_cell` (docs/licences.md)\n\n## M0 Foundation ✅\n\n- ✅ Workspace with enforced layers (engine crates build for the web target)\n- ✅ Command registry: every action has an id, label, menu path, shortcut and params\n- ✅ Command line `actcraft-cli`, local JSON control channel, MCP server with folder limits\n- ✅ Show file `.actcraft`: versioned, older files load, unknown fields kept\n- ✅ Gate `cargo xtask ci`: format, lints, tests, layers, web build, licences, assets\n- ✅ Every command survives hostile input; every file parser has a fuzz test\n- ✅ CI workflow through storytold/craft-common-actions on Linux, Windows and macOS\n\n## M1 Audio and library 🔶\n\n- ✅ Real-time engine, tracks stay sample-locked (drift-free clock)\n- ✅ Transport: Play/Pause (Space) keeps the place; Stop (Esc) goes back to the song's start\n- ✅ 64 tracks per song: volume, pan, 4-band EQ, mute, name, colour, bus\n- ✅ 16 output buses routed to interface outputs; choose the interface in Settings\n- ✅ Six labelled mute groups; song and master volume\n- ✅ Metronome: own bus, modes incl. visual-only, per-song count-in, start on the beat, latency offset\n- ✅ Tempo: automatic detection, tap tempo, manual\n- ✅ Autoplay, crossfade, fade-out, song loop; start/end time per song (by command)\n- ✅ Waveform with zoom; click to jump\n- ✅ Waveforms kept in ActCraft's cache folder between runs (made again only when the audio file\n  changes) and carried inside show packages; opening a show starts decoding its first song\n- ✅ Library search (boolean, fields, phrases, keywords), playlists with sets, smart playlists\n- ✅ Queue (128), play history (500) with playlist from a date, double-click action\n- ✅ Add songs from files (picker, drag and drop), names read with a pattern, duplicates found\n- ✅ Settings window: interface, outputs, metronome, playback, library\n- ✅ Beat grid on the waveform (bars numbered, beats faint) from tempo and first beat; clicks snap\n  to the nearest beat when \"Snap to beat\" is on\n- ⬜ MIDI file per song in sync (with M3)\n- ⬜ Effect plugins per track and bus (format chosen after its licence check)\n- 🔶 Show package (`.actcraftpack`): the show and all its audio and MIDI files in one file, for\n  backup or another computer; opening it unpacks the files beside it (done). Export of a single\n  song or playlist to do\n- ✅ Reorder songs in a set by dragging (a line shows where it lands) or with the Up/Down buttons\n\n## M2 Lyrics, regions, sheet music 🔶 in progress\n\n- ✅ Lyrics per song (Lyrics tab) with headings, bold/italic/underline and colours\n- 🔶 Font tags (sans, mono work; serif and script wait for fonts from the shared font store)\n- ✅ Chords in ChordPro syntax above the words; transpose, capo, hide chords; directives, chorus\n- ✅ Timecoded lines: the playing line is highlighted; per song the lyrics jump to the line,\n  glide smoothly between timecodes, scroll at constant speed over the song, or stay put\n- 🔶 Lyrics editor: formatting buttons, chord and colour insert, time stamp at the playback\n  position, find and replace (also `lyrics.replace`); timecode-aware undo still to do\n- 🔶 Import text, ChordPro and LRC files (done); lyrics in audio tags and DOCX text to do\n- ✅ Up to 64 named, coloured regions per song: play, loop, skip, stop after; cues; jump live\n  (Parts bar), leave a loop after its pass (L)\n- 🔶 Markers from WAV files become regions (done); markers in other formats to do\n- ✅ Spoken cues: the computer's own voice says the song title at the start and each region's\n  words a set number of beats before it (\"Chorus\", \"End 3 2 1\"), on a bus of their own\n  (Settings > Spoken cues); each phrase is spoken once and cached. A song's own Spoken cues tab\n  adds cues at the playback position with one click (Verse, Chorus, End 3 2 1...) and plays from\n  just before a cue to hear it\n- 🔶 PDF per song in the Sheet music tab: pages rendered in the background, zoom, inverted\n  colours, scroll with playback (done); annotations to do\n- 🔶 Notation per song in the Sheet music tab (done): a MusicXML score (`.musicxml`, `.xml`,\n  compressed `.mxl`, as notation and tablature editors export it) drawn as staves and tablature,\n  part by part; frets come from the file or are placed on the part's tuning; eighths and shorter\n  notes beamed by beat; the playing bar is marked on the song's beat grid, the view follows\n  playback, a click on a bar plays from there (`notation.attach`, `notation.read`,\n  `song.set {notation_file}`); drop a score on the window to attach it. Still to do, in order:\n  - ⬜ Bar offset between score and audio: a song setting \"score bar 1 is song bar N\" (also\n    negative, for a pickup bar), used by the playing-bar mark, follow and click-to-bar\n  - ⬜ Repeats and voltas (first/second endings), D.C./D.S./Coda: the score's bars unrolled into\n    the order they are played, so the playing bar is right on the second pass\n  - ⬜ Slurs and ties drawn as arcs on the staff (ties show as \"(fret)\" in the tab today)\n  - ⬜ Lyrics under the notes (`<lyric>`), and chord symbols above the staff (`<harmony>`)\n  - ⬜ Techniques in the tab: bends, slides, hammer-on/pull-off, palm mute, harmonics, vibrato\n  - ⬜ Triplets and other tuplets marked with their number and bracket\n  - ⬜ Keyboard way to move to a bar (today only a click): e.g. bar number field or arrow keys\n    on the score, with the playing bar announced\n  - ⬜ Notation in the second window (large, follows playback), like the lyrics window\n  - Not planned: native files of tablature editors are not read, their formats are not publicly documented\n    (clean room); they export MusicXML, which is read\n- 🔶 Second window for lyrics (Lyrics window: large text, chords, full screen, follows playback);\n  sheet music follows with PDF\n\n## M3 MIDI and remote ⬜\n\n- ⬜ MIDI in/out on hardware, virtual and network ports; MIDI file per song\n- ⬜ Commands per song and at lyric timecodes; macros (`$CODE`); MIDI learn\n- ⬜ MIDI Timecode and MIDI Clock out\n- ⬜ Remote actions mapped to MIDI, keys, OSC and on-screen controls\n- ⬜ Assignable on-screen buttons, knobs, sliders, toggles; clock modes; session timer\n\n## M4–M6 Lighting ⬜\n\nDMX output natively in Rust (Art-Net with node discovery, sACN with priorities, documented USB\ninterfaces), 16+ universes, fixture types and editor, Open Fixture Library import, patch, DMX\nmonitor; 2D stage preview with virtual beams; programming, presets, sequences and an effects\nengine with 70+ templates; cues, cue lists, control pages, blind and freeze, tap tempo and beat\nsync.\n\n## M7–M9 ⬜\n\nLighting lane on the song timeline driven by the song's beat grid; band network (host/client,\nremote mirroring); backup machine takeover; OSC, DMX input, joystick, Philips Hue; installers for\nall platforms.\n\n## Languages\n\n- ✅ English built in and the default; every other language is a language file in\n  `crates/actcraft-ui/i18n/` (German today). A new file adds a language with no code change\n  (`docs/translating.md`). Settings > Language picks one, or the system language; remembered on\n  this computer. A test fails when a language file lacks a window text.\n- ✅ Status messages (show opened, songs added, tempo detected, audio errors...) in the window's\n  language; the CLI and the control channel keep the English text\n- 🔶 Command errors show in the window without their kind and translated; errors that carry a\n  value (a file name, a number) are still English\n",
+  "taken": "2026-11-23",
+  "roadmap": "# Roadmap\n\nMilestones run in order. Each one ends green on `cargo xtask ci`, with\n[docs/parity.md](docs/parity.md) (every feature with its command id and status) updated.\n\nLegend: ✅ done · 🔶 partly done · ⬜ not started\n\n| Milestone | What it brings | Status |\n|---|---|---|\n| M0 | Foundation: commands, CLI, control channel, MCP, build gate | ✅ |\n| M1 | Audio engine, mixer, outputs, metronome, library, playlists, queue | 🔶 |\n| M2 | Regions, lyrics and chords, sheet music (PDF, MusicXML notes and tab), lyrics editor, second screen | 🔶 in progress |\n| M3 | MIDI in/out/sync, macros, remote actions, assignable on-screen controls | ✅ |\n| M4 | DMX output (Art-Net, sACN, USB), fixtures and patch, fixture library, DMX monitor | 🔶 USB to do |\n| M5 | 2D stage preview, programming, presets, sequences, effects engine | 🔶 presets, effects, stage preview done |\n| M6 | Cues, cue lists, control pages, blind and freeze, beat sync | 🔶 cues, cue lists and fades done |\n| M7 | One show: lighting lane on the song timeline, shared clock | ⬜ |\n| M8 | Band network, backup machine, OSC, DMX input, joystick, Hue | 🔶 OSC in done |\n| M9 | Installers: MSI and zip, DMG, AppImage/DEB/RPM/tarball | ⬜ |\n\n## Next up\n\nThe open items below, in the order they are planned. Each one is a pull request of its own;\ndetails are in the milestone sections further down.\n\n1. Lyrics from audio tags; markers from other formats than WAV (M2; the readers are proposed to\n   the shared audio library first, see below)\n2. M6: control pages and blind\n\n## Quality and open questions\n\n- ✅ OSC: the shared libraries have none; the owner chose a crates.io crate (`rosc`,\n  MIT OR Apache-2.0), and the same for DMX (Art-Net, sACN)\n- ⬜ Lyrics in audio tags (ID3 `USLT`, Vorbis comments, MP4 `©lyr`) and markers in formats other\n  than WAV need readers that belong in the shared audio library (`craft-audio`, which reads WAV\n  markers today), not in ActCraft (house rule 16); the owner agreed to propose them there\n- 🔶 Keyboard and accessibility-tree tests (kittest): `crates/actcraft-ui/src/ui_tests.rs` drives the\n  window through its AccessKit tree with the accessibility check on (pads, DMX monitor, cue lists,\n  presets); older controls get tests as they are touched\n- ⬜ The MusicXML reader (`actcraft-notation`) is app-independent: offer it to the shared\n  libraries (craft-libs), whose `craft-score` only writes MusicXML\n- ⬜ Serif and script font tags wait for fonts from the shared font store\n- ⬜ Effect plugins per track and bus: choose the plugin format after its licence check\n- Waiting on the owner's confirmation: the logo's licence (MIT OR Apache-2.0, ATTRIBUTION.md) and\n  the Apache-2.0 choice for `self_cell` (docs/licences.md)\n\n## M0 Foundation ✅\n\n- ✅ Workspace with enforced layers (engine crates build for the web target)\n- ✅ Command registry: every action has an id, label, menu path, shortcut and params\n- ✅ Command line `actcraft-cli`, local JSON control channel, MCP server with folder limits\n- ✅ Show file `.actcraft`: versioned, older files load, unknown fields kept\n- ✅ Gate `cargo xtask ci`: format, lints, tests, layers, web build, licences, assets\n- ✅ Every command survives hostile input; every file parser has a fuzz test\n- ✅ CI workflow through storytold/craft-common-actions on Linux, Windows and macOS\n\n## M1 Audio and library 🔶\n\n- ✅ Real-time engine, tracks stay sample-locked (drift-free clock)\n- ✅ Transport: Play/Pause (Space) keeps the place; Stop (Esc) goes back to the song's start\n- ✅ 64 tracks per song: volume, pan, 4-band EQ, mute, name, colour, bus\n- ✅ 16 output buses routed to interface outputs; choose the interface in Settings\n- ✅ Six labelled mute groups; song and master volume\n- ✅ Metronome: own bus, modes incl. visual-only, per-song count-in, start on the beat, latency offset\n- ✅ Tempo: automatic detection, tap tempo, manual\n- ✅ Autoplay, crossfade, fade-out, song loop; start/end time per song (by command)\n- ✅ Waveform with zoom; click to jump\n- ✅ Waveforms kept in ActCraft's cache folder between runs (made again only when the audio file\n  changes) and carried inside show packages; opening a show starts decoding its first song\n- ✅ Library search (boolean, fields, phrases, keywords), playlists with sets, smart playlists\n- ✅ Queue (128), play history (500) with playlist from a date, double-click action\n- ✅ Add songs from files (picker, drag and drop), names read with a pattern, duplicates found\n- ✅ Settings window: interface, outputs, metronome, playback, library\n- ✅ Beat grid on the waveform (bars numbered, beats faint) from tempo and first beat; clicks snap\n  to the nearest beat when \"Snap to beat\" is on\n- ✅ MIDI file per song in sync: played to the MIDI output (Settings > MIDI) from the song's start,\n  through its tempo map, moved by the MIDI latency offset; held notes released on stop and jumps\n  (`midi.attach`, `midi.read`, `song.set {midi_file}`; Mixer tab: Attach MIDI file…)\n- ⬜ Effect plugins per track and bus (format chosen after its licence check)\n- ✅ Show package (`.actcraftpack`): the show and all its audio, MIDI, PDF and score files in one\n  file, for backup or another computer; opening it unpacks the files beside it. A package can\n  also hold one song or one playlist with its songs (Song and Playlist menus, the song's\n  context menu, the playlist's Export package button; `song.export_package`,\n  `playlist.export_package`, `show.export_package {song|playlist}`)\n- ✅ Reorder songs in a set by dragging (a line shows where it lands) or with the Up/Down buttons\n\n## M2 Lyrics, regions, sheet music 🔶 in progress\n\n- ✅ Lyrics per song (Lyrics tab) with headings, bold/italic/underline and colours\n- 🔶 Font tags (sans, mono work; serif and script wait for fonts from the shared font store)\n- ✅ Chords in ChordPro syntax above the words; transpose, capo, hide chords; directives, chorus\n- ✅ Timecoded lines: the playing line is highlighted; per song the lyrics jump to the line,\n  glide smoothly between timecodes, scroll at constant speed over the song, or stay put\n- ✅ Lyrics editor: formatting buttons, chord and colour insert, time stamp at the playback\n  position, find and replace (also `lyrics.replace`); undo and redo (buttons, Ctrl+Z, Ctrl+Y)\n  for typing and every button alike, so a time stamp or a replacement goes back as one step\n- 🔶 Import text, ChordPro, LRC and DOCX files (done; DOCX through the shared `craft-docx`);\n  lyrics in audio tags to do\n- ✅ Up to 64 named, coloured regions per song: play, loop, skip, stop after; cues; jump live\n  (Parts bar), leave a loop after its pass (L)\n- 🔶 Markers from WAV files become regions (done); markers in other formats to do\n- ✅ Spoken cues: the computer's own voice says the song title at the start and each region's\n  words a set number of beats before it (\"Chorus\", \"End 3 2 1\"), on a bus of their own\n  (Settings > Spoken cues); each phrase is spoken once and cached. A song's own Spoken cues tab\n  adds cues at the playback position with one click (Verse, Chorus, End 3 2 1...) and plays from\n  just before a cue to hear it\n- ✅ PDF per song in the Sheet music tab: pages rendered in the background, zoom, inverted\n  colours, scroll with playback; marks on the pages (pen, highlighter, notes, in four named\n  colours) kept with the song and shown in the Stage window too (`pdf.mark`, `pdf.unmark`,\n  `pdf.clear_marks`)\n- ✅ Notation per song in the Sheet music tab: a MusicXML score (`.musicxml`, `.xml`,\n  compressed `.mxl`, as notation and tablature editors export it) drawn as staves and tablature,\n  part by part; frets come from the file or are placed on the part's tuning; eighths and shorter\n  notes beamed by beat; the playing bar is marked on the song's beat grid, the view follows\n  playback, a click on a bar plays from there (`notation.attach`, `notation.read`,\n  `song.set {notation_file}`); drop a score on the window to attach it. Follow-ups:\n  - ✅ Bar offset between score and audio: \"Score bar 1 is song bar N\" per song (0 or less for\n    a pickup bar), used by the playing-bar mark, follow and click-to-bar\n    (`song.set {score_first_bar}`)\n  - ✅ Repeats and endings (first, second... endings), D.C., D.S., Fine, To Coda: drawn on the\n    staff and tab, and the bars unrolled into the order they are played, so the playing bar,\n    follow and click-to-bar are right on every pass (`notation.read` reports `played_bars`)\n  - ✅ Ties and slurs drawn as arcs on the staff, over bar lines; one that continues on the next\n    line runs to the line's edge (a tie as a short half tie); tied frets show as \"(fret)\" in\n    the tab\n  - ✅ Lyrics under the notes (`<lyric>`, every verse, hyphens between syllables), and chord\n    symbols above the staff (`<harmony>`, as \"Am7\", \"F#sus4/C#\", \"N.C.\")\n  - ✅ Techniques in the tab: bends (with their size and release), slides, hammer-ons and\n    pull-offs, palm mute, harmonics, vibrato, tapping\n  - ✅ Triplets and other tuplets marked with their number, and a bracket where the notes have\n    no beam (or where the file asks for one)\n  - ✅ Keyboard way to move to a bar: with the score focused, the arrow keys choose a bar (up and\n    down by line), Home and End the first and last, Enter plays from it; the chosen bar is\n    outlined and named for screen readers, as is the playing bar\n  - ✅ Notation in the second window (large, follows playback), like the lyrics\n  - Not planned: native files of tablature editors are not read, their formats are not publicly documented\n    (clean room); they export MusicXML, which is read\n- ✅ Second window (Stage window, opened from the Lyrics or the Sheet music tab): lyrics (large\n  text, chords) or sheet music (the score at its own zoom, or the PDF at the window's width with\n  inverted colours), full screen, follows playback; it keeps its own files, so it can show\n  another song than the main window\n\n## M3 MIDI and remote 🔶 in progress\n\n- ✅ MIDI out and in on the computer's ports (the ports the system lists, hardware and virtual),\n  chosen in Settings > MIDI and kept on the computer\n- ✅ Macros: named lists of commands (Settings > Macros; `macro.set`, `macro.remove`, `macro.list`,\n  `macro.run`); `$NAME` at a timecoded lyrics line runs macro NAME when playback reaches the line\n  (and is not shown in the lyrics); a jump over a line does not run it\n- ✅ MIDI Clock (with start, stop, continue and song position) and MIDI Timecode (quarter frames,\n  a full frame on a jump; 24, 25 or 30 fps) out to a MIDI output chosen in Settings > MIDI\n  (`midi.set`); the output is kept on the computer, what is sent with the show\n- ✅ Remote actions: a MIDI note, controller (a foot switch, once per press) or program change,\n  on one channel or any, runs a command that needs nothing more; set up in Settings > MIDI by\n  hand or with MIDI learn (`remote.add`, `remote.remove`, `remote.list`, `remote.trigger`).\n  Keys have their shortcuts; pads on the screen (below). OSC: Settings > MIDI listens on a UDP\n  port (this computer only, or the network too); `/actcraft/<command id>`, `/actcraft/macro/<NAME>`\n  and `/actcraft/pad/<n>` run a command, a macro or a pad (`osc.trigger`)\n- ✅ Pads: buttons along the bottom of the window that run a command or a macro with one press,\n  in a named colour (`pad.add`, `pad.remove`, `pad.list`, `pad.press`; Edit pads); faders for\n  the master, the song or a bus volume (`pad.add {fader}`); toggles that switch the click,\n  looping the song or playing the next song and show whether they are on (`pad.add {toggle}`)\n- ✅ Clock modes (click the big clock): elapsed, remaining, until the queue ends, time of day and\n  show time (from the first Play, pauses included; its menu starts it again)\n\n## M4–M6 Lighting 🔶\n\n- ✅ DMX levels: 64 universes of 512 channels, live (not saved), set by command (`dmx.set`,\n  `dmx.clear`, `dmx.get`); Lighting > DMX monitor shows a universe, a channel is set by number\n  or by clicking it\n- ✅ DMX output: Settings > Lighting sends a universe over Art-Net (a port address, broadcast or\n  to one address) or sACN (a universe and priority, multicast or to one address), when it\n  changes and again every 0.8 s (`dmx.output_add`, `dmx.output_remove`, `dmx.output_list`).\n  \"Find Art-Net nodes\" asks the network (ArtPoll) and lists who answered with their universes;\n  one click uses a node for the next output. USB interfaces to do\n- ✅ Fixtures and patch: Lighting > Fixtures patches lights by kind (dimmer, RGB, RGBW, RGBAW+UV,\n  a moving head with 16-bit pan and tilt) or channel by channel into a universe, one or a row of\n  them, at an address or the first free one, refusing overlaps; each fixture's attributes are set\n  with sliders (`fixture.add`, `fixture.move`, `fixture.remove`, `fixture.list`, `fixture.kinds`,\n  `fixture.set`)\n- ✅ Open Fixture Library import: \"Import fixture type…\" reads a fixture file (.json) into the show\n  as a type with its modes; each channel's capability becomes its attribute and fine channels\n  follow theirs; patched by type and mode (`fixture_type.import`, `fixture_type.list`,\n  `fixture_type.remove`, `fixture.add {type, mode}`)\n- ✅ Fixture type editor: a new type, or a change to the chosen one, with its modes and each\n  channel's attribute, moved up and down or removed (`fixture_type.set`)\n- ✅ Groups and presets: fixtures picked together by name (`group.set`), set as one\n  (`fixture.set {group}`); presets keep what fixtures show (every fixture or a group) and bring\n  it back with one press (`preset.store`, `preset.recall`); Lighting > Presets. Fixtures have ids\n  so groups and presets follow them\n- ✅ Fades and cue lists: a preset fades in over seconds (`preset.recall {fade}`); cue lists go\n  through presets with Go and Back (`cue.go`, `cue.back`, `cue.jump`; Lighting > Next Cue and Cue\n  Before, so pads, keys, MIDI and OSC can run them)\n- ✅ Light cues per song: a song fires cues of a cue list at its times as it plays, like its\n  macros (a jump skips what it passes; `song.light_cue_add`, `song.light_cue_remove`; the song's\n  Light cues tab with \"Now\")\n- ✅ Effects: a group's attribute moved in a wave (smooth, on and off, ramp, up and down) between two\n  values, seconds or beats per cycle at the song tempo, spread over the group; started and\n  stopped by name (`effect.set`, `effect.start`, `effect.stop`; Lighting > Stop Effects).\n  Ready-made effect templates, colour and movement effects across several attributes, control\n  pages and blind to do\n- ✅ Ready-made effects: fourteen to start from (breathe, pulse on the beat, chase, wave, build\n  over a bar, bounce, colour pulses and drifts, sweep, fan out, nod, tilt wave, zoom); none flashes\n  more than three times a second (`effect.templates`, `effect.from_template`; \"Start from\" in the\n  effect form)\n- ✅ Blackout, master and freeze: blackout takes every fixture dark at the output and a master\n  scales how bright they are, by their intensity (or colour) channels only, so positions and the\n  stored levels stay (`dmx.blackout`, `dmx.master`); freeze holds fades and effects and lets them\n  go on from there (`lighting.freeze`). In the Presets window, the Lighting menu and as toggle\n  pads\n- ✅ 2D stage preview: Lighting > Stage shows the fixtures from above in the colour they show now;\n  placed by dragging or by numbers (`fixture.place`; `fixture.stage` lists places and colours).\n  Beams and moving-head direction to do\n\nDMX output natively in Rust (Art-Net with node discovery, sACN with priorities, documented USB\ninterfaces), 16+ universes, fixture types and editor, Open Fixture Library import, patch, DMX\nmonitor; 2D stage preview with virtual beams; programming, presets, sequences and an effects\nengine with 70+ templates; cues, cue lists, control pages, blind and freeze, tap tempo and beat\nsync.\n\n## M7–M9 ⬜\n\nLighting lane on the song timeline driven by the song's beat grid; band network (host/client,\nremote mirroring); backup machine takeover; OSC, DMX input, joystick, Philips Hue; installers for\nall platforms.\n\n## Languages\n\n- ✅ English built in and the default; every other language is a language file in\n  `crates/actcraft-ui/i18n/` (German today). A new file adds a language with no code change\n  (`docs/translating.md`). Settings > Language picks one, or the system language; remembered on\n  this computer. A test fails when a language file lacks a window text.\n- ✅ Status messages (show opened, songs added, tempo detected, audio errors...) in the window's\n  language; the CLI and the control channel keep the English text\n- ✅ Command errors show in the window without their kind and translated, also those that carry\n  a value (a song id, a limit, a file name): the window finds the English template the text was\n  made from (`error_text::TEMPLATES`, checked against every such error in the source) and\n  translates it around the value\n",
   "history": {
     "recent": [
       {
-        "hash": "e1f1e893f6d5e75260d27681d82bff7fc0d3bbfa",
-        "date": "2026-11-22",
-        "subject": "Roadmap: every open item, the next steps in order, open questions",
-        "url": "https://github.com/actcraftlive/ActCraft/pull/27",
-        "ref": "#27"
+        "hash": "c535204b8cf384ce7f22350d1ed809473fadb78b",
+        "date": "2026-11-23",
+        "subject": "Ready-made effects",
+        "url": "https://github.com/actcraftlive/ActCraft/pull/63",
+        "ref": "#63"
       },
       {
-        "hash": "98c98b1f70d8db8013ad859dfa87722024b827bd",
-        "date": "2026-11-22",
-        "subject": "Notation: beams for eighths and shorter notes",
-        "url": "https://github.com/actcraftlive/ActCraft/pull/26",
-        "ref": "#26"
+        "hash": "d7cdd14f0f08db228ca59728b67c3ff870a6421e",
+        "date": "2026-11-23",
+        "subject": "Blackout, lighting master and freeze",
+        "url": "https://github.com/actcraftlive/ActCraft/pull/62",
+        "ref": "#62"
       },
       {
-        "hash": "6ed1716504a470336d60f054e7739169e10bd486",
-        "date": "2026-11-22",
-        "subject": "Notation: MusicXML scores as staves and tablature in the Sheet music tab",
-        "url": "https://github.com/actcraftlive/ActCraft/pull/24",
-        "ref": "#24"
+        "hash": "79189d0a58fd35d585a14308fce4e8e4b648ad4e",
+        "date": "2026-11-23",
+        "subject": "2D stage preview",
+        "url": "https://github.com/actcraftlive/ActCraft/pull/61",
+        "ref": "#61"
       },
       {
-        "hash": "a32be4fe690a4cbcbc4a9e0ba4ceae275ec4272e",
-        "date": "2026-11-22",
-        "subject": "Spoken cues: edited words are used at once; the title plays with the count-in",
-        "url": "https://github.com/actcraftlive/ActCraft/pull/23",
-        "ref": "#23"
+        "hash": "0d64f216fc53cdaededca4385458746691f4eef0",
+        "date": "2026-11-23",
+        "subject": "Effects: waves on a group's attribute",
+        "url": "https://github.com/actcraftlive/ActCraft/pull/60",
+        "ref": "#60"
       },
       {
-        "hash": "7bb3ff7f93b1720dd96e8a5419f4557d152306af",
-        "date": "2026-11-22",
-        "subject": "About window with description and website",
-        "url": "https://github.com/actcraftlive/ActCraft/pull/22",
-        "ref": "#22"
+        "hash": "19c72ee09a8917c4261031ae8750ade7d362b167",
+        "date": "2026-11-23",
+        "subject": "Light cues per song, and names for the song editor's fields",
+        "url": "https://github.com/actcraftlive/ActCraft/pull/59",
+        "ref": "#59"
       },
       {
-        "hash": "8a0c543fcad2019786106def7b67cce11475636b",
-        "date": "2026-11-22",
-        "subject": "Spoken cues tab: add cues to a song with one click and listen to them",
-        "url": "https://github.com/actcraftlive/ActCraft/pull/21",
-        "ref": "#21"
+        "hash": "81d51a62bbda26790b862ae27dbb04fc7973a603",
+        "date": "2026-11-23",
+        "subject": "Window tests through the accessibility tree (egui_kittest)",
+        "url": "https://github.com/actcraftlive/ActCraft/pull/58",
+        "ref": "#58"
       },
       {
-        "hash": "64e4259f0200963f1024a68aef834f3a08304783",
-        "date": "2026-11-22",
-        "subject": "Separate Pause and Stop; optimise audio decoding in debug builds",
-        "url": "https://github.com/actcraftlive/ActCraft/pull/20",
-        "ref": "#20"
+        "hash": "b7434a829da0e560504acfd3365274ebcfc33cb4",
+        "date": "2026-11-23",
+        "subject": "Fades and cue lists",
+        "url": "https://github.com/actcraftlive/ActCraft/pull/57",
+        "ref": "#57"
       },
       {
-        "hash": "489fb3047b45787af85b500f7640261cc6ccb79e",
-        "date": "2026-11-22",
-        "subject": "Spoken cues: the song title and each part's words",
-        "url": "https://github.com/actcraftlive/ActCraft/pull/19",
-        "ref": "#19"
+        "hash": "faeae27e3a78dcec0e373234830bbe1b1a6a15e5",
+        "date": "2026-11-23",
+        "subject": "Groups and presets for fixtures",
+        "url": "https://github.com/actcraftlive/ActCraft/pull/56",
+        "ref": "#56"
       },
       {
-        "hash": "225564ea6899d0fa02e24d09c9cdc004e0fa1f74",
-        "date": "2026-11-22",
-        "subject": "Keep waveforms between runs; carry them in show packages",
-        "url": "https://github.com/actcraftlive/ActCraft/pull/18",
-        "ref": "#18"
+        "hash": "0b9a6c38352ce9b7d9bf3bdfd183da07fab30867",
+        "date": "2026-11-23",
+        "subject": "Fixture type editor",
+        "url": "https://github.com/actcraftlive/ActCraft/pull/55",
+        "ref": "#55"
       },
       {
-        "hash": "a6387d119911068036ef11f5218f286e5cdbd5a6",
-        "date": "2026-11-21",
-        "subject": "Sheet music: a PDF per song in its own tab",
-        "url": "https://github.com/actcraftlive/ActCraft/pull/17",
-        "ref": "#17"
+        "hash": "5089adf066c8b19b31418f4a924b202173548470",
+        "date": "2026-11-23",
+        "subject": "Find Art-Net nodes on the network",
+        "url": "https://github.com/actcraftlive/ActCraft/pull/54",
+        "ref": "#54"
       },
       {
-        "hash": "de1871b8d270a7e01a7c85c09ae620b88c05d24a",
-        "date": "2026-11-21",
-        "subject": "Command errors in the window's language",
-        "url": "https://github.com/actcraftlive/ActCraft/pull/16",
-        "ref": "#16"
+        "hash": "f7b2b30dae3a052bf8823e33e23042c4878ddb21",
+        "date": "2026-11-23",
+        "subject": "Fixture types from Open Fixture Library files",
+        "url": "https://github.com/actcraftlive/ActCraft/pull/53",
+        "ref": "#53"
       },
       {
-        "hash": "bfc4363f6b2e2c60634524a59f30a25f139c4611",
-        "date": "2026-11-21",
-        "subject": "Beat grid on the waveform with snap to beat",
-        "url": "https://github.com/actcraftlive/ActCraft/pull/15",
-        "ref": "#15"
+        "hash": "5eb62c36335be9fde6c2917eef8d50b2ac20f46f",
+        "date": "2026-11-23",
+        "subject": "Fixtures: patch lights and set their attributes",
+        "url": "https://github.com/actcraftlive/ActCraft/pull/52",
+        "ref": "#52"
       },
       {
-        "hash": "a66794103e65f03d699c583bbf31727f5ad0ca11",
-        "date": "2026-11-21",
-        "subject": "Reorder songs in a set by dragging",
-        "url": "https://github.com/actcraftlive/ActCraft/pull/14",
-        "ref": "#14"
+        "hash": "194e1f367672358ae07f7aba40f25a2d4fa6f6fc",
+        "date": "2026-11-23",
+        "subject": "DMX output over Art-Net and sACN",
+        "url": "https://github.com/actcraftlive/ActCraft/pull/51",
+        "ref": "#51"
       },
       {
-        "hash": "affce063859ddb10c69fa925b733874b630b3312",
-        "date": "2026-11-21",
-        "subject": "Show packages: the show and its files in one file",
-        "url": "https://github.com/actcraftlive/ActCraft/pull/13",
-        "ref": "#13"
+        "hash": "395bf8c85404e3075b96ca153a108d1abf7bec41",
+        "date": "2026-11-23",
+        "subject": "DMX levels and the DMX monitor",
+        "url": "https://github.com/actcraftlive/ActCraft/pull/50",
+        "ref": "#50"
       },
       {
-        "hash": "16acafd0cb10c43532102fcf4fb8364cb155e6da",
-        "date": "2026-11-21",
-        "subject": "Lyrics window for a second screen",
-        "url": "https://github.com/actcraftlive/ActCraft/pull/12",
-        "ref": "#12"
+        "hash": "df6186f9c8441a84cce88e4791f8e66f45c0dbdb",
+        "date": "2026-11-23",
+        "subject": "OSC remote control: commands, macros and pads from OSC messages",
+        "url": "https://github.com/actcraftlive/ActCraft/pull/49",
+        "ref": "#49"
       }
     ],
-    "commits": 41,
-    "pullRequests": 27,
+    "commits": 77,
+    "pullRequests": 63,
     "first": "2026-11-20",
-    "last": "2026-11-22",
-    "roadmapDate": "2026-11-22"
+    "last": "2026-11-23",
+    "roadmapDate": "2026-11-23"
   }
 }
