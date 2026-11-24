@@ -176,6 +176,22 @@ const MILESTONES = {
       de: 'Eigene Noten für jeden Musiker, Noten im Browser im lokalen Netz, Noten aus MIDI-Dateien und eine Setlist als PDF',
     },
   },
+  M11: {
+    en: 'Light sequences: animations for moving heads, steps on the click, started by cues',
+    title: { en: 'Light sequences', de: 'Lichtsequenzen' },
+    text: {
+      en: 'Animations for moving heads, steps on the click, started by cues',
+      de: 'Animationen für Moving Heads, Schritte auf dem Klick, von Cues gestartet',
+    },
+  },
+  M12: {
+    en: 'Help: a manual with how-tos and screenshots in the program, in every language, opened from the settings it explains',
+    title: { en: 'Help', de: 'Hilfe' },
+    text: {
+      en: 'A manual with how-tos and screenshots inside the program, in every language, opened from the settings it explains',
+      de: 'Ein Handbuch mit Anleitungen und Bildschirmfotos im Programm, in jeder Sprache, aufrufbar an den Einstellungen, die es erklärt',
+    },
+  },
 };
 
 // Roadmap section headings that are not a single milestone; unknown headings stay as they are.
@@ -192,29 +208,29 @@ const FEATURES = {
     ['Multitrack playback', 'WAV, AIFF, FLAC, MP3, Ogg, Opus and M4A. Up to 64 tracks per song run sample-accurately in sync; files are decoded in the background, so the window never freezes.'],
     ['Mixer and outputs', 'Volume, pan, 4-band EQ, mute and colour per track, 16 output buses to the outputs of your audio interface, six labelled mute groups.'],
     ['Metronome and tempo', 'Click on its own bus, count-in per song, start on the beat, a visual-only mode. Tempo is detected, tapped or typed in; a beat grid on the waveform.'],
-    ['Library and set lists', 'Search with AND, OR, NOT, fields and phrases. Playlists with sets, smart playlists, queue and history; autoplay, crossfade and fade-out.'],
+    ['Library and set lists', 'Search with AND, OR, NOT, fields and phrases. Playlists with sets, smart playlists, queue and history; autoplay, crossfade and fade-out; the set list printed as a PDF for the stage floor.'],
     ['Lyrics and chords', 'Chords in ChordPro format, transpose and capo. Timecoded lines follow the music – also in a window of their own for a second screen.'],
     ['Regions and spoken cues', 'Up to 64 regions per song to loop, skip and stop, jumpable live. The computer\'s voice announces song titles and song parts: “Chorus”, “End 3 2 1”.'],
-    ['Sheet music and tablature', 'A PDF per song with zoom, inverted colours for dark stages, scrolling with playback and your own marks on the pages. MusicXML scores are drawn as staves and tablature with repeats, lyrics and chord symbols; the playing bar is marked and a click on a bar plays from there.'],
+    ['Sheet music and tablature', 'PDFs and MusicXML scores – drawn as staves and tablature with repeats, lyrics and chords – scroll with playback. Each musician gets their own sheet and can follow it in a browser on a tablet; MIDI files become notes too.'],
     ['One show file', 'Everything lives in one .actcraft file, and older files keep loading. Show packages take all audio, MIDI and sheet music files along – the whole show, one playlist or one song.'],
     ['Sync: MIDI and band link', 'MIDI in and out, MIDI Clock and MIDI Timecode, a MIDI file per song in sync. Other ActCraft computers on the local network follow the host and play on if it goes – a backup machine.'],
     ['Remote control', 'Every action is a command: from the window, pads and faders on pages, keys, MIDI (with MIDI learn), OSC, game controllers, a lighting desk over DMX, the command line, a local JSON channel or an AI assistant via MCP. Macros bundle commands.'],
     ['Lighting: DMX and fixtures', 'DMX out over Art-Net, sACN and USB interfaces, DMX in over Art-Net. Fixtures come from Open Fixture Library or .r20 files or your own types; a 2D stage view shows their beams, and Philips Hue lights can follow them.'],
-    ['Lighting: cues and effects', 'Presets with fades, built blind while the show runs; cue lists that also run as chases. Seventy ready-made effects locked to the song\'s beat, and a lighting lane on each song\'s timeline.'],
+    ['Lighting: cues and effects', 'Presets with fades, built blind while the show runs; cue lists that also run as chases; sequences that move moving heads on the click. Seventy ready-made effects locked to the song\'s beat, and a lighting lane on each song\'s timeline.'],
   ],
   de: [
     ['Multitrack-Playbacks', 'WAV, AIFF, FLAC, MP3, Ogg, Opus und M4A. Bis zu 64 Spuren pro Song laufen sample-genau synchron; Dateien werden im Hintergrund dekodiert, das Fenster friert nie ein.'],
     ['Mixer und Ausgänge', 'Lautstärke, Panorama, 4-Band-EQ, Mute und Farbe pro Spur, 16 Ausgangsbusse auf die Ausgänge des Audio-Interfaces, sechs benannte Mute-Gruppen.'],
     ['Metronom und Tempo', 'Klick auf eigenem Bus, Einzähler pro Song, Start auf dem Schlag, rein optischer Modus. Tempo wird erkannt, getappt oder eingetippt; Taktraster auf der Wellenform.'],
-    ['Bibliothek und Setlisten', 'Suche mit AND, OR, NOT, Feldern und Phrasen. Playlists mit Sets, Smart-Playlists, Warteschlange und Verlauf; Autoplay, Crossfade und Fade-out.'],
+    ['Bibliothek und Setlisten', 'Suche mit AND, OR, NOT, Feldern und Phrasen. Playlists mit Sets, Smart-Playlists, Warteschlange und Verlauf; Autoplay, Crossfade und Fade-out; die Setlist als PDF für den Bühnenboden.'],
     ['Songtexte und Akkorde', 'Akkorde im ChordPro-Format, Transponieren und Kapo. Zeitcodierte Zeilen laufen mit der Musik mit – auch in einem eigenen Fenster für den zweiten Bildschirm.'],
     ['Regionen und Ansagen', 'Bis zu 64 Regionen pro Song zum Loopen, Überspringen und Anhalten, live anspringbar. Die Computerstimme sagt Songtitel und Songteile an: „Chorus“, „End 3 2 1“.'],
-    ['Noten und Tabulatur', 'Eine PDF pro Song mit Zoom, invertierten Farben für dunkle Bühnen, Mitscrollen und eigenen Markierungen auf den Seiten. MusicXML-Partituren erscheinen als Notenzeilen und Tabulatur mit Wiederholungen, Liedtext und Akkordsymbolen; der laufende Takt ist markiert, ein Klick auf einen Takt spielt ab dort.'],
+    ['Noten und Tabulatur', 'PDFs und MusicXML-Partituren – als Notenzeilen und Tabulatur mit Wiederholungen, Liedtext und Akkorden – scrollen mit der Wiedergabe. Jeder Musiker bekommt eigene Noten und liest sie im Browser auf dem Tablet mit; auch MIDI-Dateien werden zu Noten.'],
     ['Eine Show-Datei', 'Alles steckt in einer .actcraft-Datei, ältere Dateien laden weiter. Show-Pakete nehmen alle Audio-, MIDI- und Notendateien mit – die ganze Show, eine Playlist oder einen einzelnen Song.'],
     ['Sync: MIDI und Band-Link', 'MIDI ein und aus, MIDI Clock und MIDI Timecode, eine MIDI-Datei pro Song synchron. Weitere ActCraft-Rechner im lokalen Netz folgen dem Host und spielen weiter, wenn er ausfällt – ein Backup-Rechner.'],
     ['Fernsteuerung', 'Jede Aktion ist ein Befehl: aus dem Fenster, über Pads und Fader auf Seiten, Tasten, MIDI (mit MIDI-Learn), OSC, Gamecontroller, ein Lichtpult über DMX, die Kommandozeile, einen lokalen JSON-Kanal oder einen KI-Assistenten über MCP. Makros bündeln Befehle.'],
     ['Licht: DMX und Scheinwerfer', 'DMX aus über Art-Net, sACN und USB-Interfaces, DMX ein über Art-Net. Scheinwerfer kommen aus Dateien der Open Fixture Library, .r20-Dateien oder eigenen Typen; eine 2D-Bühnenansicht zeigt ihre Lichtkegel, Philips-Hue-Lampen folgen ihnen.'],
-    ['Licht: Cues und Effekte', 'Presets mit Überblendung, blind gebaut, während die Show läuft; Cue-Listen, die auch als Lauflicht laufen. Siebzig fertige Effekte im Takt des Songs und eine Lichtspur auf der Zeitachse jedes Songs.'],
+    ['Licht: Cues und Effekte', 'Presets mit Überblendung, blind gebaut, während die Show läuft; Cue-Listen, die auch als Lauflicht laufen; Sequenzen, die Moving Heads im Takt bewegen. Siebzig fertige Effekte im Takt des Songs und eine Lichtspur auf der Zeitachse jedes Songs.'],
   ],
 };
 
@@ -227,7 +243,7 @@ const T = {
     skip: 'Skip to content',
     navLabel: 'Main navigation',
     langLabel: 'Language',
-    ids: { progress: 'progress', features: 'features', changes: 'changes' },
+    ids: { progress: 'progress', features: 'features', changes: 'changes', try: 'try' },
     nav: { progress: 'Progress', features: 'Features', changes: 'Changes' },
     legalLabel: 'Legal',
     imprint: 'Legal notice',
@@ -255,7 +271,7 @@ const T = {
     eyebrow: 'Open source · Windows, macOS, Linux',
     h1: 'Show control for live musicians.',
     lead: 'ActCraft plays your multitrack backing tracks and controls your stage lighting – from one program, with one show file, on one shared clock. Song, audio, lyrics and lighting cues belong together.',
-    statusLine: 'Before the first release: playback, lyrics, sheet music, MIDI and lighting work; installers and band sheets come next.',
+    statusLine: 'Alpha: the first test versions are out – please try them and report what goes wrong.',
     currently: 'Currently in progress:',
     toProgress: 'View progress',
     toGithub: 'Code on GitHub',
@@ -269,16 +285,23 @@ const T = {
     detailLang: null,
     stepsLead: 'The open work in the order it is planned; each step is a pull request of its own.',
     featuresH2: 'What works today',
-    featuresLead: 'ActCraft is a native desktop app written in Rust. Its interface is available in English and German.',
+    featuresLead: 'ActCraft is a native desktop app written in Rust. Its interface and its built-in help (F1) are in English and German.',
     nextH3: 'What comes next',
-    nextText: 'Installers for Windows, macOS and Linux. Then band sheets: a sheet for every musician, followed in a browser on the local network, notes made from MIDI files and the setlist as a PDF for the stage floor.',
+    nextText: 'Proper installers for Windows, macOS and Linux (MSI, DMG, AppImage, DEB, RPM), more light sequences for moving heads, and lyrics read from the tags of audio files.',
     changesH2: 'Recent changes',
     changesLead: (n, first) => `${n} commits since ${first}. The newest entries, as they appear in the repository:`,
     allChanges: 'All changes on GitHub',
     commitLang: null,
-    tryH2: 'Try it yourself',
-    tryLead: 'Ready-made installers arrive with milestone M9. Until then, ActCraft can be built from source with a Rust toolchain (1.95 or newer):',
-    tryOutro: `Bug reports, ideas and pull requests are welcome – see the project's <a href="${REPO_URL}#readme">README</a> for how to contribute.`,
+    toTry: 'Test the alpha',
+    tryH2: 'Test the alpha',
+    tryLead: (v) =>
+      `${v ? `The newest test version is <strong>${esc(v)}</strong>` : 'The first test versions are out'}, for Windows (x86_64), macOS (Apple Silicon) and Linux (x86_64), ` +
+      'as a zip or tarball: unpack it and start ActCraft. Alpha versions are untested and not signed, so Windows and macOS may warn before the first start.',
+    tryDownload: (v) => (v ? `Download ${esc(v)}` : 'Download'),
+    tryAll: 'All releases',
+    tryBug: `Found a bug? Please <a href="${REPO_URL}/issues/new">open an issue on GitHub</a>: what you did, what you expected and what happened instead, with the version (Help > About ActCraft) and your system. A free GitHub account is needed for it.`,
+    trySource: 'You can also build ActCraft from source with a Rust toolchain (1.95 or newer):',
+    tryOutro: `Ideas and pull requests are welcome too – see the project's <a href="${REPO_URL}#readme">README</a> for how to contribute.`,
     // Spelled out as a sentence, with no "[at]"/"[dot]" tokens that harvesters know how to undo.
     email: (local, domain) =>
       `${local}, followed by the at sign (the one you type with Shift + 2 on an English keyboard), ` +
@@ -293,7 +316,7 @@ const T = {
     skip: 'Zum Inhalt springen',
     navLabel: 'Hauptnavigation',
     langLabel: 'Sprache',
-    ids: { progress: 'fortschritt', features: 'funktionen', changes: 'aenderungen' },
+    ids: { progress: 'fortschritt', features: 'funktionen', changes: 'aenderungen', try: 'testen' },
     nav: { progress: 'Fortschritt', features: 'Funktionen', changes: 'Änderungen' },
     legalLabel: 'Rechtliches',
     imprint: 'Impressum',
@@ -321,7 +344,7 @@ const T = {
     eyebrow: 'Open Source · Windows, macOS, Linux',
     h1: 'Showsteuerung für Live-Musiker.',
     lead: 'ActCraft spielt deine Multitrack-Playbacks und steuert dein Bühnenlicht – aus einem Programm, mit einer Show-Datei, auf einer gemeinsamen Uhr. Song, Audio, Text und Lichtcues gehören zusammen.',
-    statusLine: 'Noch vor dem ersten Release: Playback, Songtexte, Noten, MIDI und Licht laufen; als Nächstes kommen Installer und Noten für die Band.',
+    statusLine: 'Alpha: Die ersten Testversionen sind da – bitte ausprobieren und Fehler melden.',
     currently: 'Aktuell in Arbeit:',
     toProgress: 'Zum Fortschritt',
     toGithub: 'Quellcode auf GitHub',
@@ -335,16 +358,23 @@ const T = {
     detailLang: 'en',
     stepsLead: 'Die offene Arbeit in der geplanten Reihenfolge; jeder Schritt ist ein eigener Pull Request. Aus der Roadmap, daher auf Englisch.',
     featuresH2: 'Was heute schon geht',
-    featuresLead: 'ActCraft ist eine native Desktop-App, geschrieben in Rust. Die Oberfläche gibt es auf Englisch und Deutsch.',
+    featuresLead: 'ActCraft ist eine native Desktop-App, geschrieben in Rust. Oberfläche und eingebaute Hilfe (F1) gibt es auf Englisch und Deutsch.',
     nextH3: 'Was noch kommt',
-    nextText: 'Installer für Windows, macOS und Linux. Danach Noten für die Band: eigene Noten für jeden Musiker, im Browser im lokalen Netz mitzulesen, Noten aus MIDI-Dateien und die Setlist als PDF für den Bühnenboden.',
+    nextText: 'Richtige Installer für Windows, macOS und Linux (MSI, DMG, AppImage, DEB, RPM), weitere Lichtsequenzen für Moving Heads und Songtexte aus den Tags der Audiodateien.',
     changesH2: 'Letzte Änderungen',
     changesLead: (n, first) => `${n} Commits seit dem ${first}. Die neuesten Einträge, wie sie im Repository stehen:`,
     allChanges: 'Alle Änderungen auf GitHub',
     commitLang: 'en',
-    tryH2: 'Selbst ausprobieren',
-    tryLead: 'Fertige Installer kommen mit Meilenstein M9. Bis dahin lässt sich ActCraft mit einer Rust-Toolchain (1.95 oder neuer) aus dem Quellcode bauen:',
-    tryOutro: `Fehler, Ideen und Pull Requests sind willkommen – Hinweise dazu stehen im <a href="${REPO_URL}#readme">README</a> des Projekts.`,
+    toTry: 'Alpha testen',
+    tryH2: 'Alpha testen',
+    tryLead: (v) =>
+      `${v ? `Die neueste Testversion ist <strong>${esc(v)}</strong>` : 'Die ersten Testversionen sind da'}, für Windows (x86_64), macOS (Apple Silicon) und Linux (x86_64), ` +
+      'als ZIP oder Tarball: entpacken und ActCraft starten. Alpha-Versionen sind ungetestet und nicht signiert; Windows und macOS warnen deshalb womöglich vor dem ersten Start.',
+    tryDownload: (v) => (v ? `${esc(v)} herunterladen` : 'Herunterladen'),
+    tryAll: 'Alle Releases',
+    tryBug: `Einen Fehler gefunden? Bitte <a href="${REPO_URL}/issues/new">ein Issue auf GitHub anlegen</a>: was du gemacht hast, was du erwartet hast und was stattdessen passiert ist, dazu die Version (Hilfe > Über ActCraft) und dein System. Dafür brauchst du ein kostenloses GitHub-Konto.`,
+    trySource: 'ActCraft lässt sich auch selbst aus dem Quellcode bauen, mit einer Rust-Toolchain (1.95 oder neuer):',
+    tryOutro: `Ideen und Pull Requests sind ebenfalls willkommen – Hinweise dazu stehen im <a href="${REPO_URL}#readme">README</a> des Projekts.`,
     email: (local, domain) =>
       `${local} [das At-Zeichen, wie es auf der deutschen Tastatur mit AltGr + Q entsteht] ` +
       domain.split('.').join(' [ein einfacher Punkt] '),
@@ -507,6 +537,8 @@ function readHistory(source) {
     first: git(source, ['log', '--reverse', '--format=%cs']).split('\n')[0],
     last: git(source, ['log', '-1', '--format=%cs']),
     roadmapDate: git(source, ['log', '-1', '--format=%cs', '--', 'ROADMAP.md']),
+    // Newest release tag (the release workflow creates it when it publishes); null before the first.
+    release: git(source, ['tag', '--list', 'v*', '--sort=-creatordate']).split('\n')[0] || null,
   };
 }
 
@@ -689,6 +721,8 @@ function renderHome(roadmap, hist, lang) {
   const legend = t.legend(total);
   const cl = t.commitLang ? ` lang="${t.commitLang}"` : '';
   const ids = t.ids;
+  const rel = hist.release ? esc(encodeURIComponent(hist.release)) : null; // older snapshots have none
+  const version = hist.release?.replace(/^v/, '') ?? null;
 
   return `<section class="hero">
   <div class="wrap hero-inner">
@@ -697,7 +731,7 @@ function renderHome(roadmap, hist, lang) {
       <h1>${t.h1}</h1>
       <p class="lead">${t.lead}</p>
       <p class="status-line"><span class="dot"></span>${t.statusLine}${current ? ` ${t.currently} <strong>${esc(currentName)}</strong>.` : ''}</p>
-      <p class="actions"><a class="btn btn-primary" href="#${ids.progress}">${t.toProgress}</a><a class="btn" href="${REPO_URL}">${t.toGithub}</a></p>
+      <p class="actions"><a class="btn btn-primary" href="#${ids.try}">${t.toTry}</a><a class="btn" href="#${ids.progress}">${t.toProgress}</a><a class="btn" href="${REPO_URL}">${t.toGithub}</a></p>
     </div>
     <img class="hero-logo" src="${lang === 'de' ? '../' : ''}img/actcraft-logo.jpg" alt="${t.logoAlt}" width="512" height="512" fetchpriority="high">
   </div>
@@ -756,10 +790,13 @@ ${hist.recent.map((c) => `      <li><time datetime="${c.date}">${formatDate(c.da
   </div>
 </section>
 
-<section class="block">
+<section id="${ids.try}" class="block">
   <div class="wrap mitmachen">
     <h2>${t.tryH2}</h2>
-    <p>${t.tryLead}</p>
+    <p>${t.tryLead(version)}</p>
+    <p class="actions"><a class="btn btn-primary" href="${REPO_URL}/releases${rel ? `/tag/${rel}` : ''}">${t.tryDownload(version)}</a><a class="btn" href="${REPO_URL}/releases">${t.tryAll}</a></p>
+    <p>${t.tryBug}</p>
+    <p>${t.trySource}</p>
     <pre><code>git clone ${REPO_URL}.git
 cd ActCraft
 cargo run -p actcraft --release --bin actcraft</code></pre>
